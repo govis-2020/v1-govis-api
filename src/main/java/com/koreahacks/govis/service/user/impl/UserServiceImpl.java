@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -138,5 +139,25 @@ public class UserServiceImpl implements UserService {
         return userKeywordEntities.stream()
                 .map(UserKeywordEntity::getKeyword)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addUserKeywords(int userId, List<String> userKeywords) throws Exception {
+
+        List<UserKeywordEntity> userKeywordEntities = new ArrayList<>();
+
+        for (String userKeyword : userKeywords) {
+            userKeywordEntities.add(
+                    UserKeywordEntity.builder()
+                    .userId(userId)
+                    .keyword(userKeyword)
+                    .isEnabled(true)
+                    .build()
+            );
+        }
+
+        System.out.println(userKeywordEntities.get(0).getKeyword());
+
+        userKeywordRepository.saveAll(userKeywordEntities);
     }
 }

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ public class Login {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @ApiModel(value = "로그인 요청 request")
     public static class Request {
 

@@ -1,12 +1,14 @@
 package com.koreahacks.govis.entity.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @Table(name = "user_keyword")
 public class UserKeywordEntity {

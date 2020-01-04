@@ -13,4 +13,5 @@ public interface UserService {
     Optional<UserEntity> signUp(User.SignUp signUp) throws Exception;
     String issueAccessToken(int userId) throws Exception;
     List<String> getUserKeywords(int userId) throws Exception;
+    void addUserKeywords(int userId, List<String> userKeywords) throws Exception;
 }
