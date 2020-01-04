@@ -8,23 +8,19 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.koreahacks.govis.dto.Login;
 import com.koreahacks.govis.dto.User;
-import com.koreahacks.govis.entity.user.AccessTokenEntity;
 import com.koreahacks.govis.entity.user.UserEntity;
 import com.koreahacks.govis.entity.user.UserKeywordEntity;
 import com.koreahacks.govis.enums.ReturnCode;
 import com.koreahacks.govis.exception.GovisException;
-import com.koreahacks.govis.repository.user.AccessTokenRepository;
 import com.koreahacks.govis.repository.user.UserKeywordRepository;
 import com.koreahacks.govis.repository.user.UserRepository;
+import com.koreahacks.govis.service.auth.AuthService;
 import com.koreahacks.govis.service.user.UserService;
-import com.koreahacks.govis.util.AuthUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,13 +34,13 @@ public class UserServiceImpl implements UserService {
     private String googleClientAndroid;
 
     @Autowired
-    private UserRepository userRepository;
+    private ModelMapper modelMapper;
     @Autowired
-    private AccessTokenRepository accessTokenRepository;
+    private UserRepository userRepository;
     @Autowired
     private UserKeywordRepository userKeywordRepository;
     @Autowired
-    private ModelMapper modelMapper;
+    private AuthService authService;
 
     @Override
     public Login.Info login(String idToken) throws Exception {
@@ -84,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return Login.Info.builder()
-                .accessToken(issueAccessToken(userEntity.get().getUserId()))
+                .accessToken(authService.issueAccessToken(userEntity.get().getUserId()))
                 .userInfo(modelMapper.map(userEntity, User.Info.class))
                 .build();
     }
@@ -95,38 +91,6 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = modelMapper.map(signUp, UserEntity.class);
 
         return Optional.ofNullable(userRepository.save(userEntity));
-    }
-
-    @Override
-    public String issueAccessToken(int userId) throws Exception {
-
-        String accessToken = AuthUtil.generateAccessToken();
-        LocalDateTime expiredAt = LocalDateTime.now();
-        expiredAt = expiredAt.plusYears(10);
-
-        Optional<List<AccessTokenEntity>> accessTokenEntities =
-                accessTokenRepository.findAllByUserIdAndIsEnabled(userId, true);
-
-        if (!accessTokenEntities.isPresent()) {
-            List<AccessTokenEntity> entities = accessTokenEntities.get();
-
-            for (AccessTokenEntity entity : entities) {
-                entity.setEnabled(false);
-            }
-
-            accessTokenRepository.saveAll(entities);
-        }
-
-        AccessTokenEntity accessTokenEntity = AccessTokenEntity.builder()
-                .userId(userId)
-                .accessToken(accessToken)
-                .expiredAt(Timestamp.valueOf(expiredAt))
-                .isEnabled(true)
-                .build();
-
-        accessTokenRepository.save(accessTokenEntity);
-
-        return accessToken;
     }
 
     @Override
