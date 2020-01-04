@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
             List<AccessTokenEntity> entities = accessTokenEntities.get();
 
             for (AccessTokenEntity entity : entities) {
-                entity.setIsEnabled(false);
+                entity.setEnabled(false);
             }
 
             accessTokenRepository.saveAll(entities);

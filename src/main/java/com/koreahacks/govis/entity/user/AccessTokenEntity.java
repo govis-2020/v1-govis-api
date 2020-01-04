@@ -1,16 +1,13 @@
 package com.koreahacks.govis.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @Table(name = "access_token")
@@ -32,5 +29,4 @@ public class AccessTokenEntity {
 
     @Column(name = "is_enabled")
     private boolean isEnabled;
-
 }
