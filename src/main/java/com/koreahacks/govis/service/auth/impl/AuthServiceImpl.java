@@ -1,6 +1,6 @@
 package com.koreahacks.govis.service.auth.impl;
 
-import com.koreahacks.govis.entity.user.AccessTokenEntity;
+import com.koreahacks.govis.entity.auth.AccessTokenEntity;
 import com.koreahacks.govis.enums.ReturnCode;
 import com.koreahacks.govis.exception.GovisException;
 import com.koreahacks.govis.repository.auth.AccessTokenRepository;

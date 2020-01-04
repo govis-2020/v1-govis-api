@@ -1,4 +1,4 @@
-package com.koreahacks.govis.entity.user;
+package com.koreahacks.govis.entity.auth;
 
 import lombok.*;
 
@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "access_token")
 public class AccessTokenEntity {
 

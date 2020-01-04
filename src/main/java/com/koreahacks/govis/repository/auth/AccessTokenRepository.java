@@ -1,6 +1,6 @@
 package com.koreahacks.govis.repository.auth;
 
-import com.koreahacks.govis.entity.user.AccessTokenEntity;
+import com.koreahacks.govis.entity.auth.AccessTokenEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

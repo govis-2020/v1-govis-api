@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserEntity> signUp(User.SignUp signUp) throws Exception {
 
         UserEntity userEntity = modelMapper.map(signUp, UserEntity.class);
+        userEntity.setEnabled(true);
         userRepository.save(userEntity);
 
         return Optional.ofNullable(userEntity);
