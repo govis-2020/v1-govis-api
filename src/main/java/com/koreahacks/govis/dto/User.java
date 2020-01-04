@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class User {
 
@@ -20,6 +21,7 @@ public class User {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @ApiModel(value = "로그인 성공 시 내려가는 유저 정보")
     public static class Info {
 

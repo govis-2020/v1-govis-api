@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         Optional<List<AccessTokenEntity>> accessTokenEntities =
                 accessTokenRepository.findAllByUserIdAndIsEnabled(userId, true);
 
-        if (!accessTokenEntities.isPresent()) {
+        if (accessTokenEntities.isPresent()) {
             List<AccessTokenEntity> entities = accessTokenEntities.get();
 
             for (AccessTokenEntity entity : entities) {

@@ -19,8 +19,12 @@ public class Login {
     public static class Request {
 
         @NotBlank
-        @ApiModelProperty(notes = "구글 로그인 성공 시 주어지는 id token")
-        private String googleIdToken;
+        @ApiModelProperty(notes = "구글 로그인 성공 시 주어지는 email")
+        private String email;
+
+        @NotBlank
+        @ApiModelProperty(notes = "구글 로그인 성공 시 주어지는 유저명")
+        private String userName;
     }
 
     @Getter

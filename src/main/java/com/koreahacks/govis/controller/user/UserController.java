@@ -24,7 +24,8 @@ public class UserController {
     public Login.Response login(@RequestBody @Valid Login.Request loginRequest) throws Exception {
 
         try {
-            return new Login.Response(ReturnCode.SUCCESS, userService.login(loginRequest.getGoogleIdToken()));
+            return new Login.Response(ReturnCode.SUCCESS, userService.login(loginRequest.getEmail(),
+                    loginRequest.getUserName()));
         } catch (GovisException e) {
             return new Login.Response(e.getCode(), e.getMessage());
         }
