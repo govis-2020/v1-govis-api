@@ -10,9 +10,11 @@ import com.koreahacks.govis.dto.Login;
 import com.koreahacks.govis.dto.User;
 import com.koreahacks.govis.entity.user.AccessTokenEntity;
 import com.koreahacks.govis.entity.user.UserEntity;
+import com.koreahacks.govis.entity.user.UserKeywordEntity;
 import com.koreahacks.govis.enums.ReturnCode;
 import com.koreahacks.govis.exception.GovisException;
 import com.koreahacks.govis.repository.user.AccessTokenRepository;
+import com.koreahacks.govis.repository.user.UserKeywordRepository;
 import com.koreahacks.govis.repository.user.UserRepository;
 import com.koreahacks.govis.service.user.UserService;
 import com.koreahacks.govis.util.AuthUtil;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,10 +41,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AccessTokenRepository accessTokenRepository;
     @Autowired
+    private UserKeywordRepository userKeywordRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public Login.LoginInfo login(String idToken) throws Exception {
+    public Login.Info login(String idToken) throws Exception {
 
         HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -77,9 +82,9 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
 
-        return Login.LoginInfo.builder()
+        return Login.Info.builder()
                 .accessToken(issueAccessToken(userEntity.get().getUserId()))
-                .userInfo(modelMapper.map(userEntity, User.UserInfo.class))
+                .userInfo(modelMapper.map(userEntity, User.Info.class))
                 .build();
     }
 
@@ -92,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String issueAccessToken(long userId) throws Exception {
+    public String issueAccessToken(int userId) throws Exception {
 
         String accessToken = AuthUtil.generateAccessToken();
         LocalDateTime expiredAt = LocalDateTime.now();
@@ -121,5 +126,17 @@ public class UserServiceImpl implements UserService {
         accessTokenRepository.save(accessTokenEntity);
 
         return accessToken;
+    }
+
+    @Override
+    public List<String> getUserKeywords(int userId) throws Exception {
+
+        List<UserKeywordEntity> userKeywordEntities =
+                userKeywordRepository.findAllByUserIdAndIsEnabled(userId, true)
+                .orElseThrow(() -> new GovisException(ReturnCode.NO_KEYWORD));
+
+        return userKeywordEntities.stream()
+                .map(UserKeywordEntity::getKeyword)
+                .collect(Collectors.toList());
     }
 }

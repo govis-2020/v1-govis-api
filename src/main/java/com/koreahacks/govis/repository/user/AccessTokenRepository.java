@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AccessTokenRepository extends CrudRepository<AccessTokenEntity, Long> {
+public interface AccessTokenRepository extends CrudRepository<AccessTokenEntity, Integer> {
 
-    Optional<List<AccessTokenEntity>> findAllByUserIdAndIsEnabled(long userId, boolean isEnabled) throws Exception;
+    Optional<List<AccessTokenEntity>> findAllByUserIdAndIsEnabled(int userId, boolean isEnabled) throws Exception;
 }

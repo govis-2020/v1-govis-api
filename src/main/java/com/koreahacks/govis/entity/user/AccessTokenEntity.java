@@ -16,10 +16,10 @@ public class AccessTokenEntity {
     @Id
     @GeneratedValue
     @Column(name = "access_token_id")
-    private long accessTokenId;
+    private int accessTokenId;
 
     @Column(name = "user_id")
-    private long userId;
+    private int userId;
 
     @Column(name = "access_token")
     private String accessToken;

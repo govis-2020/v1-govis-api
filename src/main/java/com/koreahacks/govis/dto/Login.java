@@ -26,13 +26,13 @@ public class Login {
     public static class Response extends GovisDefaultResponse {
 
         @ApiModelProperty(notes = "고비스 로그인 성공 시 내려가는 로그인 정보")
-        private Login.LoginInfo loginInfo;
+        private Login.Info loginInfo;
 
         public Response(int code, String message) {
             super(code, message);
         }
 
-        public Response(ReturnCode returnCode, LoginInfo loginInfo) {
+        public Response(ReturnCode returnCode, Login.Info loginInfo) {
             super(returnCode);
             this.loginInfo = loginInfo;
         }
@@ -42,11 +42,11 @@ public class Login {
     @Builder
     @AllArgsConstructor
     @ApiModel(value = "로그인 정보")
-    public static class LoginInfo {
+    public static class Info {
 
         @ApiModelProperty(notes = "고비스 accss token")
         private String accessToken;
         @ApiModelProperty(notes = "유저 정보")
-        private User.UserInfo userInfo;
+        private User.Info userInfo;
     }
 }
