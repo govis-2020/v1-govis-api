@@ -4,8 +4,6 @@ import com.koreahacks.govis.dto.Login;
 import com.koreahacks.govis.dto.User;
 import com.koreahacks.govis.entity.user.UserEntity;
 import com.koreahacks.govis.entity.user.UserKeywordEntity;
-import com.koreahacks.govis.enums.ReturnCode;
-import com.koreahacks.govis.exception.GovisException;
 import com.koreahacks.govis.repository.user.UserKeywordRepository;
 import com.koreahacks.govis.repository.user.UserRepository;
 import com.koreahacks.govis.service.auth.AuthService;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -64,34 +61,21 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(userEntity);
     }
 
-    @Override
-    public List<String> getUserKeywords(int userId) throws Exception {
-
-        List<UserKeywordEntity> userKeywordEntities =
-                userKeywordRepository.findAllByUserIdAndIsEnabled(userId, true)
-                .orElseThrow(() -> new GovisException(ReturnCode.NO_KEYWORD));
-
-        return userKeywordEntities.stream()
-                .map(UserKeywordEntity::getKeyword)
-                .collect(Collectors.toList());
-    }
 
     @Override
-    public void addUserKeywords(int userId, List<String> userKeywords) throws Exception {
+    public void addUserKeywordIds(int userId, List<Integer> userKeywordIds) throws Exception {
 
         List<UserKeywordEntity> userKeywordEntities = new ArrayList<>();
 
-        for (String userKeyword : userKeywords) {
+        for (Integer userKeywordId : userKeywordIds) {
             userKeywordEntities.add(
                     UserKeywordEntity.builder()
                     .userId(userId)
-                    .keyword(userKeyword)
+                    .keywordId(userKeywordId)
                     .isEnabled(true)
                     .build()
             );
         }
-
-        System.out.println(userKeywordEntities.get(0).getKeyword());
 
         userKeywordRepository.saveAll(userKeywordEntities);
     }

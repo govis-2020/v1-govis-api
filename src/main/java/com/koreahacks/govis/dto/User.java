@@ -15,11 +15,7 @@ public class User {
         private String userName;
     }
 
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Data
     @ApiModel(value = "로그인 성공 시 내려가는 유저 정보")
     public static class Info {
 
