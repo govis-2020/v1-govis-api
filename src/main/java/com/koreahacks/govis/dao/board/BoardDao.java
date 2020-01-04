@@ -24,4 +24,15 @@ public class BoardDao {
 
         return Optional.ofNullable(sqlSession.selectList("getBoardsWithLimitOffset", dataMap));
     }
+
+    public Optional<List<BoardEntity>> getInterestBoardsWithLimitOffset(int userId, int limit, int offset)
+            throws Exception {
+
+        Map<String, Integer> dataMap = new HashMap<>();
+        dataMap.put("userId", userId);
+        dataMap.put("limit", limit);
+        dataMap.put("offset", offset);
+
+        return Optional.ofNullable(sqlSession.selectList("getInterestBoardsWithLimitOffset", dataMap));
+    }
 }

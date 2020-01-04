@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -23,9 +24,11 @@ public class KeywordController {
 
     @GetMapping("keywords")
     @ApiOperation(httpMethod = "GET", value = "현재 현행화되어있는 키워드 목록 조회")
-    public Keyword.Response getKeywords(@RequestHeader("userId") String userId) throws Exception {
+    public Keyword.Response getKeywords(HttpServletRequest request) throws Exception {
 
         try {
+            String userId = (String) request.getAttribute("userId");
+
             if ("".equals(userId)) {
                 throw new GovisException(ReturnCode.UNAUTHORIZED);
             }
@@ -38,11 +41,13 @@ public class KeywordController {
 
     @PostMapping("keywords")
     @ApiOperation(httpMethod = "POST", value = "사용자가 지정한 관심있는 키워드 목록 등록")
-    public GovisDefaultResponse addUserKeywords(@RequestHeader("userId") String userId,
-                                                @RequestBody
-                                                @Valid UserKeyword.Request userKeywordRequest) throws Exception {
+    public GovisDefaultResponse addUserKeywords(@RequestBody
+                                                @Valid UserKeyword.Request userKeywordRequest,
+                                                HttpServletRequest request) throws Exception {
 
         try {
+            String userId = (String) request.getAttribute("userId");
+
             if ("".equals(userId)) {
                 throw new GovisException(ReturnCode.UNAUTHORIZED);
             }

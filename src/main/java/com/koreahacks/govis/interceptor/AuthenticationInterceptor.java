@@ -22,8 +22,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         String accessToken = request.getHeader("authorization");
 
         if ("".equals(accessToken)) {
-            request.setAttribute("userId", "");
-            return true;
+
+            return false;
         }
 
         try {
@@ -31,9 +31,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
             return true;
         } catch (GovisException e) {
-            request.setAttribute("userId", "");
 
-            return true;
+            return false;
         }
     }
 }

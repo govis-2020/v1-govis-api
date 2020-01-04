@@ -6,8 +6,11 @@ import com.koreahacks.govis.enums.ReturnCode;
 import com.koreahacks.govis.exception.GovisException;
 import com.koreahacks.govis.service.board.BoardService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class BoardController {
@@ -17,11 +20,15 @@ public class BoardController {
 
     @GetMapping("boards")
     @ApiOperation(httpMethod = "GET", value = "게시물 리스트 조회")
-    public Board.Response getBoards(@RequestHeader("userId") String userId,
-                                    @RequestParam(value = "limit", required = false) Integer limit,
-                                    @RequestParam(value = "offset", required = false) Integer offset) throws Exception {
+    public Board.Response getBoards(@RequestParam(value = "limit", required = false) Integer limit,
+                                    @RequestParam(value = "offset", required = false) Integer offset,
+                                    @ApiParam(value = "Y로 보내줄 시 관심사 게시물 조회")
+                                    @RequestParam(value = "interest", required = false) String interest,
+                                    HttpServletRequest request) throws Exception {
 
         try {
+            String userId = (String) request.getAttribute("userId");
+
             if ("".equals(userId)) {
                 throw new GovisException(ReturnCode.UNAUTHORIZED);
             }
@@ -31,6 +38,10 @@ public class BoardController {
             }
             if (offset == null) {
                 offset = 0;
+            }
+            if ("Y".equals(interest)) {
+                return new Board.Response(ReturnCode.SUCCESS, boardService.getInterestBoards(Integer.parseInt(userId),
+                        limit, offset));
             }
 
             return new Board.Response(ReturnCode.SUCCESS, boardService.getBoards(limit, offset));
@@ -42,10 +53,12 @@ public class BoardController {
 
     @GetMapping("board/{boardId}")
     @ApiOperation(httpMethod = "GET", value = "게시물 상세 조회")
-    public BoardDetail.Response getBoardDetail(@RequestHeader("userId") String userId,
-                                               @PathVariable(value = "boardId") String boardId) throws Exception {
+    public BoardDetail.Response getBoardDetail(@PathVariable(value = "boardId") String boardId,
+                                               HttpServletRequest request) throws Exception {
 
         try {
+            String userId = (String) request.getAttribute("userId");
+
             if ("".equals(userId)) {
                 throw new GovisException(ReturnCode.UNAUTHORIZED);
             }
