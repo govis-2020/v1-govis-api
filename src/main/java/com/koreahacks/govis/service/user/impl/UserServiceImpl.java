@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
         return Login.Info.builder()
                 .accessToken(authService.issueAccessToken(userEntity.get().getUserId()))
-                .userInfo(modelMapper.map(userEntity, User.Info.class))
+                .userInfo(modelMapper.map(userEntity.get(), User.Info.class))
                 .build();
     }
 

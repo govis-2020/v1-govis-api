@@ -2,10 +2,7 @@ package com.koreahacks.govis.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 public class User {
 
@@ -19,12 +16,15 @@ public class User {
     }
 
     @Getter
+    @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @ApiModel(value = "로그인 성공 시 내려가는 유저 정보")
     public static class Info {
 
+        @ApiModelProperty(notes = "유저id")
+        private int userId;
         @ApiModelProperty(notes = "유저명")
         private String userName;
         @ApiModelProperty(notes = "이메일")
