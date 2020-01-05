@@ -6,18 +6,28 @@
 
 <mapper namespace="board">
     <select id="getBoardsWithLimitOffset" parameterType="map" resultType="BoardEntity">
-      SELECT *
-      FROM board
-      ORDER BY created_at DESC
+      SELECT b.id as id, b.title as title, b.created_at as createdAt
+      FROM board b
+      ORDER BY b.created_at DESC
       LIMIT #{limit} OFFSET #{offset};
     </select>
 
     <select id="getInterestBoardsWithLimitOffset" parameterType="map" resultType="BoardEntity">
-      SELECT *
+      SELECT b.id as id, b.title as title, k.name as keyword, b.created_at as createdAt
       FROM user_keyword uk
       JOIN board_keyword bk ON uk.keyword_id = bk.keyword_id
       JOIN board b ON bk.board_id = b.id
+      LEFT JOIN keyword k ON uk.keyword_id = k.id
       WHERE uk.user_id = #{userId}
+      GROUP BY b.id
+      ORDER BY b.created_at DESC
+      LIMIT #{limit} OFFSET #{offset};
+    </select>
+
+    <select id="getBoardsByTypeWithLimitOffset" parameterType="map" resultType="BoardEntity">
+      SELECT b.id as id, b.title as title, b.created_at as createdAt
+      FROM board b
+      WHERE b.type = #{type}
       ORDER BY b.created_at DESC
       LIMIT #{limit} OFFSET #{offset};
     </select>

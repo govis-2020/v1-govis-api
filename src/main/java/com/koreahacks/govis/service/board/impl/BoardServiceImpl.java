@@ -51,4 +51,14 @@ public class BoardServiceImpl implements BoardService {
                 .map(entity -> modelMapper.map(entity, Board.Info.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Board.Info> getBoardsByType(String type, int limit, int offset) throws Exception {
+        List<BoardEntity> boardEntities = boardDao.getBoardsByTypeWithLimitOffset(type, limit, offset)
+                .orElseThrow(() -> new GovisException(ReturnCode.NO_BOARD));
+
+        return boardEntities.stream()
+                .map(entity -> modelMapper.map(entity, Board.Info.class))
+                .collect(Collectors.toList());
+    }
 }

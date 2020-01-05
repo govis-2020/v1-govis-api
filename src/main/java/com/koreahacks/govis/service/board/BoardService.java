@@ -10,4 +10,5 @@ public interface BoardService {
     BoardEntity getBoardDetail(int boardId) throws Exception;
     List<Board.Info> getBoards(int limit, int offset) throws Exception;
     List<Board.Info> getInterestBoards(int userId, int limit, int offset) throws Exception;
+    List<Board.Info> getBoardsByType(String type, int limit, int offset) throws Exception;
 }

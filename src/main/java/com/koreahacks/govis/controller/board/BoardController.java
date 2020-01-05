@@ -24,6 +24,8 @@ public class BoardController {
                                     @RequestParam(value = "offset", required = false) Integer offset,
                                     @ApiParam(value = "Y로 보내줄 시 관심사 게시물 조회")
                                     @RequestParam(value = "interest", required = false) String interest,
+                                    @ApiParam(value = "크롤링 해온 referer type")
+                                    @RequestParam(value = "type", required = false) String type,
                                     HttpServletRequest request) throws Exception {
 
         try {
@@ -42,6 +44,9 @@ public class BoardController {
             if ("Y".equals(interest)) {
                 return new Board.Response(ReturnCode.SUCCESS, boardService.getInterestBoards(Integer.parseInt(userId),
                         limit, offset));
+            }
+            if (!"".equals(type)) {
+                return new Board.Response(ReturnCode.SUCCESS, boardService.getBoardsByType(type, limit, offset));
             }
 
             return new Board.Response(ReturnCode.SUCCESS, boardService.getBoards(limit, offset));

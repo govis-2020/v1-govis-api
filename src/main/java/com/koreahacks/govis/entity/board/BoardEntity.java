@@ -1,12 +1,13 @@
 package com.koreahacks.govis.entity.board;
 
-import lombok.Getter;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
-@Getter
+@Data
 @Table(name = "board")
 public class BoardEntity {
 
@@ -30,9 +31,12 @@ public class BoardEntity {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "attatchments")
-    private String attatchments;
+    @Column(name = "attachments")
+    private String attachments;
 
     @Column(name = "created_at")
     private Date createdAt;
+
+    @Transient
+    private String keyword;
 }

@@ -21,6 +21,9 @@ public class Board {
         @ApiModelProperty(notes = "제목")
         private String title;
 
+        @ApiModelProperty(notes = "관심사")
+        private String keyword;
+
         @ApiModelProperty(notes = "게시일")
         private Date createdAt;
     }
